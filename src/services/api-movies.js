@@ -51,10 +51,10 @@ export async function getMovieReviews(movieId) {
   }
 }
 
-export async function getMovieSearch(movieQuery) {
+export async function getMovieSearch(movieQuery, page) {
   try {
     const response = await axios.get(
-      `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${movieQuery}`
+      `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${movieQuery}&page=${page}`
     );
     return response.data;
   } catch (error) {

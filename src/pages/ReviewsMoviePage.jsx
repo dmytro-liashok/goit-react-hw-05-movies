@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getMovieReviews } from 'services/api-movies';
-import { toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { ReviewMovieListStyled } from '../components/ReviewMovieItem/ReviewMovieItem.styled';
+const ReviewMovieItem = lazy(() =>
+  import('components/ReviewMovieItem/ReviewMovieItem')
+);
 
 export default function ReviewsMoviePage() {
   const [reviews, setReviews] = useState([]);
@@ -10,13 +12,8 @@ export default function ReviewsMoviePage() {
 
   useEffect(() => {
     async function fetchReviewsMovie() {
-      try {
-        const response = await getMovieReviews(movieId);
-        setReviews(response.results);
-      } catch (error) {
-        toast.error('Oops! Something went wrong! Please try again!');
-        throw error;
-      }
+      const response = await getMovieReviews(movieId);
+      setReviews(response.results);
     }
     fetchReviewsMovie();
   }, [movieId]);
@@ -24,14 +21,11 @@ export default function ReviewsMoviePage() {
   return (
     <>
       {reviews && (
-        <ul>
+        <ReviewMovieListStyled>
           {reviews.map(review => (
-            <li key={review.id}>
-              <h3>{review.author}</h3>
-              <p>{review.content}</p>
-            </li>
+            <ReviewMovieItem key={review.id} review={review} />
           ))}
-        </ul>
+        </ReviewMovieListStyled>
       )}
       {reviews?.length === 0 && (
         <p>

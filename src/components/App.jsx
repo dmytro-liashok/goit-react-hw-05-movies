@@ -1,30 +1,50 @@
-import { Suspense, lazy } from 'react';
-import { Route, Routes, NavLink } from 'react-router-dom';
+import { Suspense, lazy, useState, useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-// import HomePage from '../pages/Home';
-// import MoviesPage from '../pages/Movies';
-// import DetailsMoviesPage from 'pages/DetailsMovies';
-const HomePage = lazy(() => import('../pages/Home'));
-const MoviesPage = lazy(() => import('../pages/Movies'));
+import { getGenresMovieList } from '../services/api-movies';
+const HomePage = lazy(() => import('../pages/HomePage'));
+const MoviesPage = lazy(() => import('../pages/MoviesPage'));
 const DetailsMoviesPage = lazy(() => import('../pages/DetailsMovies'));
+const Navigation = lazy(() => import('../components/Navigation/Navigation'));
+const Loader = lazy(() => import('../components/Loader/Loader'));
 
 export const App = () => {
+  const [moviesGenres, setMoviesGenres] = useState([]);
+
+  useEffect(() => {
+    async function fetchGenresMovies() {
+      const response = await getGenresMovieList();
+      setMoviesGenres(response.genres);
+    }
+    fetchGenresMovies();
+  }, []);
+
   return (
-    <div className="container">
+    <>
       <header>
-        <nav>
-          <NavLink to="/">Home</NavLink>
-          <NavLink to="/movies">Movies</NavLink>
-        </nav>
+        <div className="container">
+          <Navigation />
+        </div>
       </header>
       <main>
-        <Suspense fallback={<div>Loading</div>}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/movies" element={<MoviesPage />} />
-            <Route path="/movies/:movieId/*" element={<DetailsMoviesPage />} />
-          </Routes>
-        </Suspense>
+        <div className="container">
+          <Suspense fallback={<Loader />}>
+            <Routes>
+              <Route
+                path="/"
+                element={<HomePage moviesGenres={moviesGenres} />}
+              />
+              <Route
+                path="/movies"
+                element={<MoviesPage moviesGenres={moviesGenres} />}
+              />
+              <Route
+                path="/movies/:movieId/*"
+                element={<DetailsMoviesPage />}
+              />
+            </Routes>
+          </Suspense>
+        </div>
       </main>
       <ToastContainer
         position="top-center"
@@ -38,6 +58,6 @@ export const App = () => {
         pauseOnHover
         theme="colored"
       />
-    </div>
+    </>
   );
 };

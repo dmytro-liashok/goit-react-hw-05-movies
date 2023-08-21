@@ -11,7 +11,7 @@ export async function getTrendingMovies() {
     return response.data;
   } catch (error) {
     toast.error('Oops! Something went wrong! Please try again!');
-    // throw error;
+    throw error;
   }
 }
 
@@ -55,6 +55,18 @@ export async function getMovieSearch(movieQuery, page) {
   try {
     const response = await axios.get(
       `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${movieQuery}&page=${page}`
+    );
+    return response.data;
+  } catch (error) {
+    toast.error('Oops! Something went wrong! Please try again!');
+    throw error;
+  }
+}
+
+export async function getGenresMovieList(movieQuery, page) {
+  try {
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}`
     );
     return response.data;
   } catch (error) {

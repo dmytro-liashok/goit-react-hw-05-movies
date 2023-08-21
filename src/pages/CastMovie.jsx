@@ -1,8 +1,11 @@
-import { useEffect, useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getMovieCast } from 'services/api-movies';
 import { toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { CastMovieList } from '../components/CastMovieItem/CastMovieItem.styled';
+const CastMovieItem = lazy(() =>
+  import('components/CastMovieItem/CastMovieItem')
+);
 
 export default function CastMoviePage() {
   const [casts, setCast] = useState([]);
@@ -23,11 +26,11 @@ export default function CastMoviePage() {
   return (
     <>
       {casts && (
-        <ul>
+        <CastMovieList>
           {casts.map(cast => (
-            <li key={cast.id}>{cast.name}</li>
+            <CastMovieItem key={cast.id} cast={cast} />
           ))}
-        </ul>
+        </CastMovieList>
       )}
     </>
   );

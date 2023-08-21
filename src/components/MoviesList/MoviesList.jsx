@@ -1,31 +1,25 @@
-import { NavLink, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { getTrendingMovies } from 'services/api-movies';
+import { lazy } from 'react';
+import PropTypes from 'prop-types';
+import { MovieList } from './MoviesList.styled';
+const MovieItem = lazy(() => import('components/MovieItem/MovieItem'));
 
-export default function MoviesList() {
-  const [moviesData, setMoviesData] = useState([]);
-  const location = useLocation();
-
-  useEffect(() => {
-    async function fetchTrendingMovies() {
-      const response = await getTrendingMovies();
-      setMoviesData(response.results);
-    }
-
-    fetchTrendingMovies();
-  }, []);
-
+export default function MoviesList({ moviesData, moviesGenres }) {
   return (
     <>
-      <ul>
+      <MovieList>
         {moviesData.map(movie => (
-          <li key={movie.id}>
-            <NavLink to={`/movies/${movie.id}`} state={location}>
-              {movie.title}
-            </NavLink>
-          </li>
+          <MovieItem
+            key={movie.id}
+            movieData={movie}
+            moviesGenres={moviesGenres}
+          />
         ))}
-      </ul>
+      </MovieList>
     </>
   );
 }
+
+MoviesList.propTypes = {
+  moviesData: PropTypes.array.isRequired,
+  moviesGenres: PropTypes.array.isRequired,
+};

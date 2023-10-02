@@ -5,6 +5,7 @@
 .idea/
 
 # dependencies
+/src/services/api-key.js
 /node_modules
 /.pnp
 .pnp.js

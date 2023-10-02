@@ -1,6 +1,6 @@
-import API_KEY from './api-key';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import API_KEY from './api-key';
 import 'react-toastify/dist/ReactToastify.css';
 
 export async function getTrendingMovies() {

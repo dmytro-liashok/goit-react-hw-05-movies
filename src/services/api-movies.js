@@ -34,7 +34,7 @@ export async function getMovieCast(movieId) {
     );
     return response.data;
   } catch (error) {
-    toast.error('Oops! Something went wrong! Please try again!');
+    toast.error('Oops! Something went wrong! Please try again! ');
     throw error;
   }
 }

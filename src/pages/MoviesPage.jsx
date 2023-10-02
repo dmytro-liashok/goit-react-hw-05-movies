@@ -53,6 +53,7 @@ export default function MoviesPage({ moviesGenres }) {
     const value = event.target.search.value.trim();
     setSearchParams({ query: value });
     setPage(1);
+    console.log(value);
   }
 
   function handleChangePage(value) {
